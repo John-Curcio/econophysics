@@ -3,10 +3,9 @@
 
 ![example output](example.png)
 
-Dependencies:
-python 3
-numpy
-matplotlib
+#Dependencies:
+
+python 3, numpy, matplotlib
 
 Two files are included. simStock.py simulates paths of stock prices given some input parameters. simTwitter.py simulates paths of twitter shares. Both codes estimate optimal call and put prices.
 
