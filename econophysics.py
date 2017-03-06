@@ -1,6 +1,7 @@
 import sys
 import numpy as np
 import csv
+import matplotlib.pyplot as plt
 
 #TODO: twitter.csv only has the last three weeks' worth of closing prices
 def getClosingPrices():
@@ -16,12 +17,34 @@ def getClosingPrices():
 
 def parseArgs():
     paramNames = ["r", "sigma", "T", "S", "X", "N", "n"]
-    paramVals = [0.1, 0.5, 100, 15, 16, 1000, 30]
+    paramVals = [0.1, 0.01, 100, 15, 16, 1000, 30]
     for i in range(1, len(sys.argv)):
         paramVals[i - 1] = sys.argv[i]
     for i in range(len(paramNames)):
         print("The input value for", paramNames[i], "is:", paramVals[i])
     return paramVals
+
+def simStock(r, sigma, T, S, X, N, n):
+    dt = T/N
+    calls, puts = [None]*n, [None]*n
+    # plt.figure(1)
+    for path in range(n):
+        pathPrice = [None] * N
+        pathPrice[0] = S
+        
+        for j in range(N - 1):
+            epsilon = np.random.normal()
+            exponent = (r - 0.5*sigma**2)*dt + sigma * epsilon * dt**0.5
+            pathPrice[j+1] = pathPrice[j]*np.exp(exponent) 
+        calls[path] = np.exp(-1*r*T) * max(pathPrice[-1] - X, 0)
+        puts[path] = np.exp(-1*r*T) * max(X - pathPrice[-1], 0)
+        #plotting
+        plt.plot(pathPrice)
+    plt.show()
+
+    callPrice = np.mean(calls)
+    putPrice = np.mean(puts)
+    print(callPrice, putPrice)
 
 def main():
     paramVals = parseArgs()
@@ -36,21 +59,7 @@ def main():
     muHat = np.std(closingPrices)
     sigmaHat = np.std(closingPrices, ddof=1)
 
-    dt = T/N
-    calls, puts = [None]*n, [None]*n
-    for path in range(n):
-        pathPrice = [None] * N
-        pathPrice[0] = S
-        
-        for j in range(N - 1):
-            epsilon = np.random.normal()
-            exponent = (r - 0.5*sigma**2)*dt + sigma * epsilon * dt**0.5
-            pathPrice[j+1] = pathPrice[j]*np.exp(exponent) 
-        calls[path] = np.exp(-1*r*T) * max(pathPrice[-1] - X, 0)
-        puts[path] = np.exp(-1*r*T) * max(X - pathPrice[-1], 0)
-    callPrice = np.mean(calls)
-    putPrice = np.mean(puts)
-    print(callPrice, putPrice)
+    simStock(r, sigma, T, S, X, N, n)
 
 if __name__ == '__main__':
     main()
