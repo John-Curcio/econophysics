@@ -1,11 +1,13 @@
 
-## Pricing European Options through Monte Carlo
+# Pricing European Options through Monte Carlo
+
+This was my submission for a project in my Advanced Computational Physics class (33-456).
 
 ![example output](example.png)
 
-#Dependencies:
-
+##Dependencies:
 python 3, numpy, matplotlib
+
 
 Two files are included. simStock.py simulates paths of stock prices given some input parameters. simTwitter.py simulates paths of twitter shares. Both codes estimate optimal call and put prices.
 
