@@ -1,4 +1,8 @@
 
+## Pricing European Options through Monte Carlo
+
+![example output](example.png)
+
 Dependencies:
 python 3
 numpy
